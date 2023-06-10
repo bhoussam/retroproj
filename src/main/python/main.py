@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 
+import pandas as pd
+
 # Create webdriver object
 driver = webdriver.Chrome()
 
@@ -17,6 +19,27 @@ sleep(2)
 # Obtain the number of rows in body
 table = driver.find_elements(By.XPATH, '//*[@id="userdata"]/tbody')[0]
 
+films = []
+reals = []
+annees = []
+lieux = []
+for i, td in enumerate(table.find_elements(By.TAG_NAME, "td")):
+    if i%2 == 0:
+        contenu = td.text.split(',')
+        film = contenu[0]
+        real = contenu[1] 
+        films.append(film)
+        reals.append(real)
+    else:
+        contenu = td.text
+        lieux.append(contenu)
 
-for tr in table.find_elements(By.TAG_NAME, "tr"):
-    print(tr.text)
+df = pd.DataFrame(
+    {
+        "films": films,
+        "reals": reals,
+        "lieux": lieux,
+    }
+)
+
+1

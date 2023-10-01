@@ -2,4 +2,4 @@ pandas
 selenium
 webdriver-manager
 streamlit
-IPython
+tqdm

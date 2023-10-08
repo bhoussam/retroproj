@@ -9,6 +9,7 @@ import streamlit as st
 
 @st.cache_data()
 def populate_df():
+    st.write('Attends 2sc stp')
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')

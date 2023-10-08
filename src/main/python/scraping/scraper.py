@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from tqdm import tqdm
+from stqdm import stqdm
 from time import sleep
 
 import pandas as pd
@@ -9,7 +9,6 @@ import streamlit as st
 
 @st.cache_data()
 def populate_df():
-    st.write('Attends 2sc stp')
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
@@ -24,11 +23,11 @@ def populate_df():
     annees = []
     lieux = []
     dates = []
-    for clicker in range(8):
+    for clicker in stqdm(range(8)):
         sleep(1)
         table = driver.find_elements(By.XPATH, '//*[@id="userdata"]/tbody')[0]
 
-        for i, td in enumerate(tqdm(table.find_elements(By.TAG_NAME, "td"))):
+        for i, td in enumerate(stqdm(table.find_elements(By.TAG_NAME, "td"))):
             if i % 2 == 0:
                 contenu = td.text.rsplit(',', 1)
                 film = contenu[0]

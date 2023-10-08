@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from tqdm import tqdm
 from time import sleep
-from webdriver_manager.chrome import ChromeDriverManager
 
 import pandas as pd
 import streamlit as st
@@ -16,12 +15,10 @@ def populate_df():
     op.add_argument('headless')
     # service = webdriver.ChromeService(ChromeDriverManager().install())
     driver = webdriver.Chrome(options=op)
+    driver.implicitly_wait(10)
 
     # Get the website
     driver.get("https://leretroprojecteur.com")
-
-    # Make Python sleep for some time
-    sleep(2)
 
     films = []
     reals = []

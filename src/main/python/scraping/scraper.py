@@ -14,8 +14,8 @@ def populate_df():
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
-    op.add_argument(ChromeDriverManager().install())
-    driver = webdriver.Chrome(options=op)
+    service = webdriver.ChromeService(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options=op, service=service)
 
     # Get the website
     driver.get("https://leretroprojecteur.com")

@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 import pandas as pd
 import streamlit as st
-import os
+
 
 @st.cache_data()
 def populate_df():
@@ -14,8 +14,8 @@ def populate_df():
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
-    service = webdriver.ChromeService(ChromeDriverManager().install())
-    driver = webdriver.Chrome(options=op, service=service)
+    # service = webdriver.ChromeService(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options=op)
 
     # Get the website
     driver.get("https://leretroprojecteur.com")

@@ -2,8 +2,9 @@ import pandas as pd
 import streamlit as st
 import os
 
-csv_path = "data/{}.csv".format(st.session_state['user'])
 if st.session_state['user']:
+    st.write("Salut {}".format(st.session_state['user']))
+    csv_path = "data/{}.csv".format(st.session_state['user'])
     if os.path.exists(csv_path):
         wish = pd.read_csv(csv_path)
 

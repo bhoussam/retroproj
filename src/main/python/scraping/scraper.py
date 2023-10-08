@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from tqdm import tqdm
 from time import sleep
+from webdriver_manager.chrome import ChromeDriverManager
 
 import pandas as pd
 import streamlit as st
@@ -13,6 +14,7 @@ def populate_df():
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
+    op.add_argument(ChromeDriverManager().install())
     driver = webdriver.Chrome(options=op)
 
     # Get the website

@@ -13,7 +13,6 @@ def populate_df():
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
-    # service = webdriver.ChromeService(ChromeDriverManager().install())
     driver = webdriver.Chrome(options=op)
     driver.implicitly_wait(10)
 
@@ -26,8 +25,7 @@ def populate_df():
     lieux = []
     dates = []
     for clicker in range(8):
-        # Obtain the number of rows in body
-        table = ""
+        sleep(1)
         table = driver.find_elements(By.XPATH, '//*[@id="userdata"]/tbody')[0]
 
         for i, td in enumerate(tqdm(table.find_elements(By.TAG_NAME, "td"))):

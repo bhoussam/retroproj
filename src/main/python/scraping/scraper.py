@@ -51,3 +51,6 @@ def populate_df(nb_days):
     )
 
     return df
+
+def scrap_watchlsit():
+    pass

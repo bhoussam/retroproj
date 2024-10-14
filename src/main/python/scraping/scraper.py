@@ -6,13 +6,17 @@ from time import sleep
 import pandas as pd
 
 
-def populate_df(nb_days):
+def _get_driver():
     # Create webdriver object
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
     driver = webdriver.Chrome(options=op)
     driver.implicitly_wait(10)
+    return driver
 
+def populate_df(nb_days):
+    # init driver
+    driver = _get_driver()
     # Get the website
     driver.get("https://leretroprojecteur.com")
 
@@ -51,6 +55,3 @@ def populate_df(nb_days):
     )
 
     return df
-
-def scrap_watchlsit():
-    pass

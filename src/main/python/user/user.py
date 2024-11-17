@@ -1,8 +1,12 @@
+from datetime import datetime
+
+from src.main.python.movie.imdb import _get_french_info, _split_name_year
 from src.main.python.scraping.scraper import _get_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from tqdm import tqdm
-from time import sleep
+import requests
+import json
 
 
 class User:
@@ -11,8 +15,34 @@ class User:
         self.username = username
         self.mail = mail
 
-    def send_mail(self):
-        pass
+    def send_push(self, df_alert):
+        if len(df_alert)>0:
+            current_week = datetime.today()
+            df = df_alert[['films', 'lieux', 'date']]
+            requests.post(
+                "https://ntfy.sh/retroproj",
+                data=
+                """
+                
+                    Tes **films** de la semaine {} !! 😀
+                    
+                    ---
+                    
+                    {}
+                    
+                    ---
+                    
+                """.format(current_week,  df.to_markdown()),
+                headers={
+                    # "Email": "houssam.boulemia@yahoo.fr",
+                    "Tags": "warning,skull",
+                    "Priority": "high",
+                    "Markdown": "yes",
+                    "Click": "https://leretroprojecteur.com",
+
+                }
+            )
+
 
     def scrap_watchlist(self):
         # init driver
@@ -32,7 +62,8 @@ class User:
                 table = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div/section/ul')
                 for li in table[0].find_elements(By.TAG_NAME, "li"):
                     movie = li.find_elements(By.TAG_NAME, "a")[0].get_attribute('data-original-title')
-                    watch_list.append(movie)
+                    movie_name, movie_year = _split_name_year(movie)
+                    watch_list.append(_get_french_info(movie_name, movie_year))
 
                 driver.get("https://letterboxd.com/{}/watchlist/page/{}/".format(self.username, num_page))
 
@@ -41,6 +72,10 @@ class User:
             if table:
                 for li in table[0].find_elements(By.TAG_NAME, "li"):
                     movie = li.find_elements(By.TAG_NAME, "a")[0].get_attribute('data-original-title')
-                    watch_list.append(movie)
+                    movie_name, movie_year = _split_name_year(movie)
+                    watch_list.append(_get_french_info(movie_name, movie_year))
 
         return watch_list
+
+
+

@@ -1,5 +1,5 @@
 from pyhocon import ConfigFactory
-
+from loguru import logger
 
 class Config(object):
     def __init__(self, conf_path):
@@ -10,3 +10,11 @@ class Config(object):
             return None
         return self._config[property_name]
 
+def custom_logger():
+    logger.add(
+        "log/file_1.log",
+        rotation="500 MB",
+        colorize=True,
+        format="<green>{time}</green> <level>{message}</level> <red>{name}</red>"
+    )
+    return logger

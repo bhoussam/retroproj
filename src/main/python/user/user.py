@@ -1,12 +1,14 @@
 from datetime import datetime
 
-from src.main.python.movie.imdb import _get_french_info, _split_name_year
-from src.main.python.scraping.scraper import _get_driver
+from movies.imdb import _get_french_info, _split_name_year
+from scraping.scraper import _get_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from tqdm import tqdm
 import requests
 import json
+import smtplib
+from email.mime.text import MIMEText
 
 
 class User:
@@ -19,9 +21,7 @@ class User:
         if len(df_alert)>0:
             current_week = datetime.today()
             df = df_alert[['films', 'lieux', 'date']]
-            requests.post(
-                "https://ntfy.sh/retroproj",
-                data=
+            email_text = \
                 """
                 
                     Tes **films** de la semaine {} !! 😀
@@ -32,16 +32,20 @@ class User:
                     
                     ---
                     
-                """.format(current_week,  df.to_markdown()),
-                headers={
-                    # "Email": "houssam.boulemia@yahoo.fr",
-                    "Tags": "warning,skull",
-                    "Priority": "high",
-                    "Markdown": "yes",
-                    "Click": "https://leretroprojecteur.com",
+                """.format(current_week,  df.to_markdown())
+            GMAIL_USERNAME = "alert.retroproj@gmail.com"
+            GMAIL_APP_PASSWORD = "wzgywarbhfzhsqyd"
 
-                }
-            )
+            recipients = ["houssam.boulemia@yahoo.fr"]
+            msg = MIMEText(email_text)
+            msg["Subject"] = "Email report: a simple sum"
+            msg["To"] = ", ".join(recipients)
+            msg["From"] = f"{GMAIL_USERNAME}@gmail.com"
+
+            smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+            smtp_server.login(GMAIL_USERNAME, GMAIL_APP_PASSWORD)
+            smtp_server.sendmail(msg["From"], recipients, msg.as_string())
+            smtp_server.quit()
 
 
     def scrap_watchlist(self):

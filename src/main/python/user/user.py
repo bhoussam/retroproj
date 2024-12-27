@@ -9,6 +9,8 @@ import requests
 import json
 import smtplib
 from email.mime.text import MIMEText
+from email.message import EmailMessage
+from pretty_html_table import build_table
 
 
 class User:
@@ -21,24 +23,24 @@ class User:
         if len(df_alert)>0:
             current_week = datetime.today()
             df = df_alert[['films', 'lieux', 'date']]
-            email_text = \
-                """
-                
-                    Tes **films** de la semaine {} !! 😀
-                    
-                    ---
-                    
-                    {}
-                    
-                    ---
-                    
-                """.format(current_week,  df.to_markdown())
+            output_table = build_table(df, "blue_light")
+            email_text = """\
+                <html>
+                <head></head>
+                <body>
+                <p>Tes films de la semaine {} !! 😀</p>
+                {}
+                </body>
+                </html>
+                """.format(current_week,  output_table)
+
             GMAIL_USERNAME = "alert.retroproj@gmail.com"
             GMAIL_APP_PASSWORD = "wzgywarbhfzhsqyd"
 
             recipients = ["houssam.boulemia@yahoo.fr"]
-            msg = MIMEText(email_text)
-            msg["Subject"] = "Email report: a simple sum"
+            msg = EmailMessage()
+            msg.add_alternative(email_text, subtype='html')
+            msg["Subject"] = "[RETROPROJ] Un film de ta watchlist"
             msg["To"] = ", ".join(recipients)
             msg["From"] = f"{GMAIL_USERNAME}@gmail.com"
 

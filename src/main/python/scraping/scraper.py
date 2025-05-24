@@ -29,7 +29,7 @@ def populate_df(nb_days):
         sleep(1)
 
         table = driver.find_elements(By.XPATH, "//div[@class='flex group']")
-        date = driver.find_elements(By.XPATH,'/html/body/div/div[2]/div/div[2]/div[1]/div/div[1]/div[2]/div/div/div/div[2]')[0].text + ' ' + str(pd.to_datetime('today').year)
+        date = driver.find_elements(By.XPATH,'/html/body/div/div[2]/div/div[2]/div[1]/div[1]/div[2]/div/div/div/div[2]/h2')[0].text + ' ' + str(pd.to_datetime('today').year)
 
         for div in tqdm(table):
             text = div.text
@@ -40,7 +40,7 @@ def populate_df(nb_days):
             dates.append(date)
 
 
-        driver.find_element(By.XPATH, '/html/body/div/div[2]/div/div[2]/div[1]/div/div[1]/div[2]/div/div/div/div[3]/div').click()
+        driver.find_element(By.XPATH, '/html/body/div/div[2]/div/div[2]/div[1]/div[1]/div[2]/div/div/div/div[3]/div').click()
         # Make Python sleep for some time
         sleep(.1)
 

@@ -15,23 +15,23 @@ log.info("Begin")
 log.info("set to french locale in order to parse date")
 locale.setlocale(category=locale.LC_ALL, locale='fr_FR.utf8')
 
-# # scrap the website & cast to datetime
-# data = populate_df(nb_days=1)
-# data['date2'] = pd.to_datetime(data['date'].str.title(), format='%A %d %B %Y')
-# imdb = pd.json_normalize(data.apply(lambda x: _get_french_info(x.films, int(x.annees)), axis=1))
-# data = pd.concat([data, imdb], axis=1)
-#
-# # save data
-# data.to_csv(os.path.join(DATA_PATH, 'base.csv'))
+# scrap the website & cast to datetime
+data = populate_df(nb_days=1)
+data['date2'] = pd.to_datetime(data['date'].str.title(), format='%A %d %B %Y')
+imdb = pd.json_normalize(data.apply(lambda x: _get_french_info(x.films, int(x.annees)), axis=1))
+data = pd.concat([data, imdb], axis=1)
+
+# save data
+data.to_csv(os.path.join(DATA_PATH, 'base.csv'))
 
 # Get user wishlist
 df_users = pd.read_csv(os.path.join(DATA_PATH, 'users.csv'))
 
 for username in df_users['user']:
     user = User(username, "")
-    # watch_list = user.scrap_watchlist()
-    # alert = pd.DataFrame(watch_list)
-    # alert.to_csv(os.path.join(DATA_PATH, '{}.csv'.format(username)))
+    watch_list = user.scrap_watchlist()
+    alert = pd.DataFrame(watch_list)
+    alert.to_csv(os.path.join(DATA_PATH, '{}.csv'.format(username)))
 
     alert = pd.read_csv('/home/houssam/projects/retroproj/data/yndi.csv')
     data = pd.read_csv('/home/houssam/projects/retroproj/data/base.csv')
